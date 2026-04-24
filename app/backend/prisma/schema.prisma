@@ -1,0 +1,116 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model AdminUser {
+  id               String   @id @default(uuid())
+  name             String
+  email            String   @unique
+  password         String
+  avatar           String?
+  role             String   @default("staff")
+  status           String   @default("active")
+  phone            String?
+  department       String?
+  twoFactorEnabled Boolean  @default(false)
+  twoFactorSecret  String?
+  lastLogin        DateTime?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model AdminSettings {
+  id                          Int      @id @default(1)
+  hostelName                  String
+  tagline                     String?
+  description                 String?
+  whatsappNumber              String?
+  email                       String?
+  phone                       String?
+  address                     String?
+  logo                        String?
+  favicon                     String?
+  primaryColor                String   @default("#d97706")
+  accentColor                 String   @default("#059669")
+  darkMode                    Boolean  @default(false)
+  currency                    String   @default("USD")
+  timezone                    String   @default("UTC")
+  minStayNights               Int      @default(1)
+  maxStayNights               Int      @default(30)
+  checkInTime                 String   @default("14:00")
+  checkOutTime                String   @default("11:00")
+  minGuests                   Int      @default(1)
+  maxGuests                   Int      @default(10)
+  maxGuestsPerRoom            Int      @default(6)
+  allowChildren               Boolean  @default(true)
+  allowPets                   Boolean  @default(false)
+  petFee                      Float    @default(0)
+  cancellationPolicy          String?
+  termsAndConditions          String?
+  privacyPolicy               String?
+  houseRules                  String?
+  metaTitle                   String?
+  metaDescription             String?
+  metaKeywords                String?
+  ogImage                     String?
+  googleAnalyticsId           String?
+  facebookPixelId             String?
+  customHeaderScript          String?
+  customFooterScript          String?
+  emailNotifications          Boolean  @default(true)
+  whatsappNotifications       Boolean  @default(true)
+  bookingConfirmationTemplate String?
+  bookingReminderTemplate     String?
+}
+
+model Package {
+  id          String    @id @default(uuid())
+  name        String
+  description String
+  price       Float
+  duration    String
+  features    String    // Stringified JSON array
+  icon        String
+  popular     Boolean   @default(false)
+  active      Boolean   @default(true)
+  bookings    Booking[]
+}
+
+model Room {
+  id            String    @id @default(uuid())
+  name          String
+  description   String
+  pricePerNight Float
+  capacity      Int
+  beds          String
+  amenities     String    // Stringified JSON array
+  image         String
+  available     Boolean   @default(true)
+  active        Boolean   @default(true)
+  bookings      Booking[]
+}
+
+model Booking {
+  id             String   @id @default(uuid())
+  guestName      String
+  guestEmail     String
+  guestPhone     String
+  checkInDate    DateTime
+  checkOutDate   DateTime
+  guestCount     Int
+  totalAmount    Float
+  status         String   @default("pending")
+  notes          String?
+  packageId      String?
+  package        Package? @relation(fields: [packageId], references: [id])
+  roomId         String?
+  room           Room?    @relation(fields: [roomId], references: [id])
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
