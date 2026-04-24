@@ -1,6 +1,9 @@
 import type { AdminSettings, BookingStats, RecentBooking, AdminUser, BookingEvent } from '@/types/admin';
 
 export const defaultSettings: AdminSettings = {
+  // Routing
+  adminRoute: '/admin-portal',
+
   // Basic Info
   hostelName: 'Wanderlust Hostel',
   tagline: 'Your Home Away From Home',

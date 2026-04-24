@@ -27,6 +27,7 @@ model AdminUser {
 
 model AdminSettings {
   id                          Int      @id @default(1)
+  adminRoute                  String   @default("/admin-portal")
   hostelName                  String
   tagline                     String?
   description                 String?

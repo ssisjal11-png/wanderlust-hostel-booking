@@ -147,6 +147,17 @@ export function SettingsManager({
                 </div>
               </div>
               <div className="space-y-2">
+                <Label>Secure Admin Portal URL</Label>
+                <Input
+                  value={localSettings.adminRoute || '/admin-portal'}
+                  onChange={(e) => handleChange('adminRoute', e.target.value)}
+                  placeholder="/my-secret-admin"
+                />
+                <p className="text-xs text-destructive font-medium">
+                  WARNING: If you change this, the admin panel will immediately move to the new URL. Do not forget this URL or you will be locked out!
+                </p>
+              </div>
+              <div className="space-y-2">
                 <Label>Description</Label>
                 <Textarea
                   value={localSettings.description}

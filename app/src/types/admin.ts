@@ -1,6 +1,9 @@
 // Admin types for dashboard management
 
 export interface AdminSettings {
+  // Routing
+  adminRoute: string;
+
   // Basic Info
   hostelName: string;
   tagline: string;

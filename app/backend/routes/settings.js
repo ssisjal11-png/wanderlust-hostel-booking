@@ -2,6 +2,24 @@ const express = require('express');
 const router = express.Router();
 const prisma = require('../db');
 
+// GET public settings (only non-sensitive data like adminRoute)
+router.get('/public', async (req, res) => {
+    try {
+        const settings = await prisma.adminSettings.findUnique({
+            where: { id: 1 },
+            select: { adminRoute: true }
+        });
+
+        if (!settings) {
+            return res.json({ adminRoute: '/admin-portal' }); // Fallback
+        }
+
+        res.json(settings);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch public settings' });
+    }
+});
+
 // GET settings
 router.get('/', async (req, res) => {
     try {

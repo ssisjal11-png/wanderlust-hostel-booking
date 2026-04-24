@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { Toaster, toast } from 'sonner';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { Sidebar } from '@/components/Sidebar';
@@ -142,6 +142,37 @@ function BookingForm() {
 }
 
 function App() {
+  const [adminRoute, setAdminRoute] = useState<string>('/admin-portal');
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchAdminRoute = async () => {
+      try {
+        const response = await fetch('/api/settings/public');
+        if (response.ok) {
+          const data = await response.json();
+          if (data.adminRoute) {
+            setAdminRoute(data.adminRoute);
+          }
+        }
+      } catch (error) {
+        console.error('Failed to fetch admin route:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchAdminRoute();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
   return (
     <>
       <Toaster 
@@ -156,8 +187,8 @@ function App() {
       />
       <Routes>
         <Route path="/" element={<BookingForm />} />
-        {/* Hidden Admin Route */}
-        <Route path="/management-portal-secure-2024" element={<AdminDashboard />} />
+        {/* Hidden Dynamic Admin Route */}
+        <Route path={adminRoute} element={<AdminDashboard />} />
         {/* Redirect any unknown paths to home */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
