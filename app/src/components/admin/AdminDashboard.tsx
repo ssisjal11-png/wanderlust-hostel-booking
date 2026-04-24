@@ -173,7 +173,7 @@ export function AdminDashboard() {
         return (
           <AdminManager
             admins={adminUsers}
-            currentAdmin={currentAdmin}
+            currentAdmin={currentAdmin!}
             isEditing={isEditingAdmin}
             selectedAdmin={selectedAdmin}
             showDeleteConfirm={showDeleteConfirm}
@@ -189,7 +189,7 @@ export function AdminDashboard() {
       case 'profile':
         return (
           <AdminProfile
-            admin={currentAdmin}
+            admin={currentAdmin!}
             onUpdate={updateCurrentAdmin}
             generate2FA={generate2FA}
             enable2FA={enable2FA}

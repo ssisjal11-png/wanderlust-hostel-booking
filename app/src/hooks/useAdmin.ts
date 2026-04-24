@@ -74,7 +74,7 @@ export function useAdmin() {
   const [bookingEvents, setBookingEvents] = useState<BookingEvent[]>(mockBookingEvents);
 
   // Admin Users
-  const [adminUsers, setAdminUsers] = useState<AdminUser[]>(mockAdminUsers);
+  const [adminUsers, setAdminUsers] = useState<AdminUser[]>([]);
 
   // UI State
   const [isEditingPackage, setIsEditingPackage] = useState(false);
@@ -357,14 +357,14 @@ export function useAdmin() {
   }, []);
 
   const updateAdmin = useCallback((id: string, admin: Partial<AdminUser>) => {
-    setAdminUsers(prev => prev.map(a => a.id === id ? { ...a, ...admin } : a));
+    setAdminUsers(prev => prev.map(a => a.id === id ? { ...a, ...admin } as AdminUser : a));
     // Also update current admin if it's the same user
-    if (currentAdmin.id === id) {
-      setCurrentAdmin(prev => ({ ...prev, ...admin }));
+    if (currentAdmin?.id === id) {
+      setCurrentAdmin(prev => (prev ? { ...prev, ...admin } as AdminUser : null));
     }
     setIsEditingAdmin(false);
     setSelectedAdmin(null);
-  }, []);
+  }, [currentAdmin]);
 
   const deleteAdmin = useCallback((id: string) => {
     setAdminUsers(prev => prev.filter(a => a.id !== id));

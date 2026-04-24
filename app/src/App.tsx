@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useCallback } from 'react';
 import { Toaster, toast } from 'sonner';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { Sidebar } from '@/components/Sidebar';
